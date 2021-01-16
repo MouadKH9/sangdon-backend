@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PasswordResetRequestController;
+use App\Http\Controllers\ChangePasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +17,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});*/
+
+Route::group(['middleware' => ['jwt.verify']], function () {
+    Route::get('/user',[UserController::class, 'getAuthenticatedUser']);
 });
+Route::post('/register',[UserController::class, 'register']);
+Route::post('/login',[UserController::class, 'authenticate']);
+Route::delete('/user',[UserController::class, 'delete']);
+Route::post('/user',[UserController::class, 'update']);
+
+Route::post('/reset-password-request', [PasswordResetRequestController::class, 'sendPasswordResetEmail']);
+Route::post('/change-password', [ChangePasswordController::class, 'passwordResetProcess']);
+
+Route::delete('/user/{id}',[UserController::class, 'deleteUser']);
+Route::post('/user/{id}',[UserController::class, 'updateUser']);
+Route::get('/users',[UserController::class, 'allUsers']);
+
