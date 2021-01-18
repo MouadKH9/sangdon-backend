@@ -11,7 +11,7 @@ class Typesang extends Model
     use HasFactory,Notifiable;
 
 
-    protected $table = 'typesangs';
+    protected $table = 'type_sangs';
 
     protected $fillable = [
         'tsang',

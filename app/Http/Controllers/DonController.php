@@ -18,10 +18,8 @@ class DonController extends Controller
      */
     public function index()
     {
-       $dons = Don::all();
-
        return response()->json([
-               'dons' => $dons
+               'dons' => Don::all()
         ]);
     }
 
@@ -33,42 +31,20 @@ class DonController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),
-        [
-            'adresse' => 'required',
-            'id_user' => 'required',
-        ]);
+        $validated = $this->validated($request);
+        //creer un nouveau don
+        $don = new Don(['adresse' => $validated['adresse']]);
         
-        if($validator->fails())
-        {
-            return response()->json(
-                [
-                    'request' => $request->all(),
-                    'validation' => $validator->errors()
-                ]
-                );
-        }
-        else
-        {
-            //creer un nouveau don
-            $don = new Don(['adresse' => $request->input('adresse')]);
-            
-            $user = User::find($request->input('id_user'));
-            $typesang = $user->typesang;
-            
-            $don->user()->associate($user);
-            $don->typesang()->associate($typesang);
-            $don->save();
+        $user = User::find($validated['id_user']);
+        $type_sang = $user->type_sang;
+        
+        $don->user()->associate($user);
+        $don->type_sang()->associate($type_sang);
+        $don->save();
 
-
-            $dons = $user->dons;
-            return response()->json([
-                'user' => $user,
-                'typesang' => $typesang,
-                'msg' => 'Don sauveguarder avec succes',
-                'don' => $don
-            ]);
-        }
+        return response()->json([
+            'msg' => 'Don sauveguarder avec succes',
+        ]);
     }
     /**
      * Display the specified resource.
@@ -85,18 +61,6 @@ class DonController extends Controller
             'dons' => $dons,
         ]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -106,9 +70,22 @@ class DonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+        $validated = $request->validate([
+            'adresse' => 'required|max:255',
+        ]);
 
+        $don = Don::findOrFail($id);
+
+        $don->adresse = $validated['adresse'];
+
+        $don->save();
+
+        return response()->json([
+            'don' => $don,
+            'msg' => 'don modifier avec succes'
+
+        ]);
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -117,6 +94,23 @@ class DonController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $don = Don::findOrFail($id);
+
+        $don->delete();
+
+        return response()->json([
+            'msg' => 'don supprimer avec succes'
+        ]);
+    }
+
+
+    private function validated(Request $request)
+    {
+        $validated = $request->validate([
+            'adresse' => 'required|max:255',
+            'id_user' => 'required'
+        ]);
+
+        return $validated;
     }
 }

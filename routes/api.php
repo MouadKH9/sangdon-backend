@@ -19,6 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/dons',[DonController::class,'index']);
-Route::post('/dons/save', [DonController::class,'store']);
-Route::get('/dons/{id}', [DonController::class,'show']);
+Route::apiResource('dons', DonController::class);

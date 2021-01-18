@@ -46,8 +46,8 @@ class User extends Authenticatable
         return $this->hasMany(Don::class);
     }
 
-    public function typesang()
+    public function type_sang()
     {
-        return $this->belongsTo(TypeSang::class);
+        return $this->belongsTo(Typesang::class,'type_sang_id');
     }
 }

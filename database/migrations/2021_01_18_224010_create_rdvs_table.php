@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDonsTable extends Migration
+class CreateRdvsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateDonsTable extends Migration
      */
     public function up()
     {
-        Schema::create('dons', function (Blueprint $table)
-        {
+        Schema::create('rdvs', function (Blueprint $table) {
             $table->id();
-            $table->string('adresse');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignID('type_sang_id')->constrained('type_sangs')->onDelete('cascade');
-            $table->softDeletes();
+            $table->foreignId('rdv_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -30,7 +27,6 @@ class CreateDonsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dons');
-
+        Schema::dropIfExists('rdvs');
     }
 }

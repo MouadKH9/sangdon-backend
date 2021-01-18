@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
 class Don extends Model
 {
-    use HasFactory, Notifiable;
-
+    use HasFactory, Notifiable, SoftDeletes;
 
     public $timestamps = false;
     /**
@@ -28,8 +28,8 @@ class Don extends Model
     }
     
     //type de sang du don
-    public function typesang()
+    public function type_sang()
     {
-        return $this->belongsTo(TypeSang::class,'typesang_id');
+        return $this->belongsTo(Typesang::class,'type_sang_id');
     }
 }
