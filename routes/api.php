@@ -6,6 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetRequestController;
 use App\Http\Controllers\ChangePasswordController;
 
+use App\Http\Controllers\CentreController;
+use App\Http\Controllers\VilleController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,6 +27,7 @@ use App\Http\Controllers\ChangePasswordController;
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('/user',[UserController::class, 'getAuthenticatedUser']);
 });
+
 Route::post('/register',[UserController::class, 'register']);
 Route::post('/login',[UserController::class, 'authenticate']);
 Route::delete('/user',[UserController::class, 'delete']);
@@ -35,4 +39,7 @@ Route::post('/change-password', [ChangePasswordController::class, 'passwordReset
 Route::delete('/user/{id}',[UserController::class, 'deleteUser']);
 Route::post('/user/{id}',[UserController::class, 'updateUser']);
 Route::get('/users',[UserController::class, 'allUsers']);
+
+Route::resource('centres', CentreController::class);
+Route::resource('villes', VilleController::class);
 
