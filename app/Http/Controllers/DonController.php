@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Don;
 use App\Models\TypeSang;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,7 +35,9 @@ class DonController extends Controller
         $validated = $this->validated($request);
         //creer un nouveau don
         $don = new Don(['adresse' => $validated['adresse']]);
-        
+        /*$don->created_at = Carbon::now();
+        $don->updated_at = Carbon::now();*/
+
         $user = User::find($validated['id_user']);
         $type_sang = $user->type_sang;
         
@@ -47,20 +50,53 @@ class DonController extends Controller
         ]);
     }
     /**
-     * Display the specified resource.
+     * Display Dons d'un utilisateur
      *
-     * @param  int  $id
+     * @param  int  $id_user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showUserDons($id_user)
     {
-        $user = User::find($id);
+        $user = User::find($id_user);
         $dons = $user->dons;
 
         return response()->json([
             'dons' => $dons,
         ]);
     }
+
+    /**
+     * Display une Don
+     *
+     * @param  int  $id_user
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $don = Don::findOrFail($id);
+
+        return response()->json([
+            'don' => $don,
+        ]);
+    }
+    /**
+     * Display User statics
+     *
+     * @param  int  $id_user
+     * @return \Illuminate\Http\Response
+     */
+    public function showUserStats($id_user)
+    {
+        $dons = Don::selectRaw('year(created_at) year, count(*) data')
+                                ->groupBy('year')
+                                ->orderBy('year', 'desc')
+                                ->get();
+
+        return response()->json([
+            'stats' => $dons
+            ]);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -75,7 +111,7 @@ class DonController extends Controller
         ]);
 
         $don = Don::findOrFail($id);
-
+       // $don->updated_at = Carbon::now();
         $don->adresse = $validated['adresse'];
 
         $don->save();

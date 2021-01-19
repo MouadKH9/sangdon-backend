@@ -19,6 +19,7 @@ class CreateDonsTable extends Migration
             $table->string('adresse');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignID('type_sang_id')->constrained('type_sangs')->onDelete('cascade');
+            $table->timestamps();
             $table->softDeletes();
         });
     }

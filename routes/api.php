@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\demandeController;
 
 use App\Http\Controllers\CentreController;
+use App\Http\Controllers\RdvController;
 use App\Http\Controllers\VilleController;
 
 /*
@@ -29,8 +30,12 @@ Route::get('showList/{id_user}',[demandeController::class, 'showList']);
 Route::get('showDemande/{id_dem}',[demandeController::class, 'getDemandeById']);
 Route::post('update/{id_dem}',[demandeController::class, 'update']);
 //dons api
-Route::apiResource('dons', DonController::class);
+Route::get('/dons/stats/{id_user}', [DonController::class, 'showUserStats']);
+Route::get('/dons/{id_user}', [DonController::class, 'showUserDons']);
+Route::resource('dons', DonController::class);
 //centres api
 Route::resource('centres', CentreController::class);
 //villes api
 Route::resource('villes', VilleController::class);
+//RDV api
+Route::resource('rdv', RdvController::class);

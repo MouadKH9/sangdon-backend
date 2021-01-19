@@ -11,7 +11,7 @@ class Don extends Model
 {
     use HasFactory, Notifiable, SoftDeletes;
 
-    public $timestamps = false;
+    public $timestamps = true;
     /**
      * The attributes that are mass assignable.
      *
