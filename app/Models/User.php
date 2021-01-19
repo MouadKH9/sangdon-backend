@@ -44,6 +44,16 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    public function dons()
+    {
+        return $this->hasMany(Don::class);
+    }
+
+    public function type_sang()
+    {
+        return $this->belongsTo(Typesang::class,'type_sang_id');
+    }
+    
     public function getJWTIdentifier()
     {
         return $this->getKey();

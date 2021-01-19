@@ -21,6 +21,8 @@ class CreateUsersTable extends Migration
             $table->string('sexe');
             $table->string('type')->default('utilisateur');
             $table->string('email')->unique();
+            $table->foreignId('type_sang_id')->constrained();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->timestamps();
         });
