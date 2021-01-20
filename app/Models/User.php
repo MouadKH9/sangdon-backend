@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class User extends \TCG\Voyager\Models\User implements JWTSubject
 {
     use HasFactory, Notifiable;
 
@@ -51,14 +51,14 @@ class User extends Authenticatable implements JWTSubject
 
     public function type_sang()
     {
-        return $this->belongsTo(Typesang::class,'type_sang_id');
+        return $this->belongsTo(Typesang::class, 'type_sang_id');
     }
-    
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
-    
+
     public function getJWTCustomClaims()
     {
         return [];
