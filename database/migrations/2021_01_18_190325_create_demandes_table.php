@@ -16,8 +16,10 @@ class CreateDemandesTable extends Migration
         Schema::create('demandes', function (Blueprint $table) {
             $table->increments('id_dem');
             $table->string('adress');
-            $table->boolean('stat');
+            $table->boolean('stat')->defaul(true);
             $table->foreignId('id_user')->references('id')->on('users')->onDelete('cascade');
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }
