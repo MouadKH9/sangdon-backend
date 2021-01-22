@@ -32,11 +32,12 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'age' => 'required|integer',
-            'adress' => 'required|string',
-            'sexe' => 'required|string',
+            'date_naissance' => 'required|date_format:Y-m-d',
+            'sexe' => 'required|string|in:homme,femme',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:4|confirmed',
+            'ville_id' => 'required|exists:villes,id',
+            'type_sang_id' => 'required|exists:type_sangs,id',
         ]);
 
         if ($validator->fails()) {
@@ -45,11 +46,12 @@ class UserController extends Controller
 
         $user = User::create([
             'name' => $request->get('name'),
-            'age' => $request->get('age'),
-            'adress' => $request->get('adress'),
+            'date_naissance' => $request->get('date_naissance'),
             'sexe' => $request->get('sexe'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
+            'ville_id' => $request->get('ville_id'),
+            'type_sang_id' =>  $request->get('type_sang_id'),
         ]);
 
         $token = JWTAuth::fromUser($user);
@@ -82,20 +84,39 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'string|max:255',
+            'date_naissance' => 'date_format:Y-m-d',
+            'sexe' => 'string|in:homme,femme',
+            'ville_id' => 'exists:villes,id',
+            'type_sang_id' => 'exists:type_sangs,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
         $user = $this->getAuthenticatedUser();
         $name = $request->get('name');
-        $age = $request->get('age');
-        $adress = $request->get('adress');
+        $sexe = $request->get('sexe');
+        $date_naissance = $request->get('date_naissance');
+        $ville_id = $request->get('ville_id');
+        $type_sang_id = $request->get('type_sang_id');
+
         if ($name != "")
             $user->name = $name;
-        if ($age != "")
-            $user->age = $age;
-        if ($adress != "")
-            $user->adress = $adress;
+        if ($date_naissance != "")
+            $user->date_naissance = $date_naissance;
+        if ($ville_id != "")
+            $user->ville_id = $ville_id;
+        if ($type_sang_id != "")
+            $user->type_sang_id = $type_sang_id;
+        if ($sexe != "")
+            $user->sexe = $sexe;
         $user->save();
         return response()->json('user updated', 200);
     }
-
 
     public function deleteUser($id)
     {
@@ -112,16 +133,36 @@ class UserController extends Controller
     {
         $user = $this->getAuthenticatedUser();
         if ($user->type == "admin") {
+
+            $validator = Validator::make($request->all(), [
+                'name' => 'string|max:255',
+                'date_naissance' => 'date_format:Y-m-d',
+                'sexe' => 'string|in:homme,femme',
+                'ville_id' => 'exists:villes,id',
+                'type_sang_id' => 'exists:type_sangs,id',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json($validator->errors()->toJson(), 400);
+            }
+
             $user1 = User::find($id);
             $name = $request->get('name');
-            $age = $request->get('age');
-            $adress = $request->get('adress');
+            $sexe = $request->get('sexe');
+            $date_naissance = $request->get('date_naissance');
+            $ville_id = $request->get('ville_id');
+            $type_sang_id = $request->get('type_sang_id');
+
             if ($name != "")
                 $user1->name = $name;
-            if ($age != "")
-                $user1->age = $age;
-            if ($adress != "")
-                $user1->adress = $adress;
+            if ($date_naissance != "")
+                $user1->date_naissance = $date_naissance;
+            if ($ville_id != "")
+                $user1->ville_id = $ville_id;
+            if ($type_sang_id != "")
+                $user1->type_sang_id = $type_sang_id;
+            if ($sexe != "")
+                $user1->sexe = $sexe;
             $user1->save();
             return response()->json('user updated', 200);
         } else

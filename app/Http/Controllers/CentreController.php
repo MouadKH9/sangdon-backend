@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Centre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class CentreController extends Controller
 {
@@ -25,17 +27,26 @@ class CentreController extends Controller
      */
     public function store(Request $request)
     {
-
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'address' => 'required|max:255',
+            'heure_ouv'=> 'required|date_format:H:i',
+            'heure_ferm'=> 'required|date_format:H:i|after:heure_ouv',
+            'phone_number'=> 'required|numeric|digits:10',
             'ville_id' => 'required|exists:villes,id',
         ]);
 
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
         $centre = new Centre;
-        $centre->name = $validated['name'];
-        $centre->address = $validated['address'];
-        $centre->ville_id = $validated["ville_id"];
+        $centre->name = $request['name'];
+        $centre->address = $request['address'];
+        $centre->heure_ouv = $request['heure_ouv'];
+        $centre->heure_ferm = $request['heure_ferm'];
+        $centre->phone_number = $request['phone_number'];
+        $centre->ville_id = $request["ville_id"];
 
         $centre->save();
 
@@ -56,15 +67,25 @@ class CentreController extends Controller
      */
     public function update(Request $request, Centre $centre)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'address' => 'required|max:255',
+            'heure_ouv'=> 'required|date_format:H:i',
+            'heure_ferm'=> 'required|date_format:H:i|after:heure_ouv',
+            'phone_number'=> 'required|numeric|digits:10',
             'ville_id' => 'required|exists:villes,id',
         ]);
 
-        $centre->name = $validated['name'];
-        $centre->address = $validated['address'];
-        $centre->ville_id = $validated["ville_id"];
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        
+        $centre->name = $request['name'];
+        $centre->address = $request['address'];
+        $centre->heure_ouv = $request['heure_ouv'];
+        $centre->heure_ferm = $request['heure_ferm'];
+        $centre->phone_number = $request['phone_number'];
+        $centre->ville_id = $request["ville_id"];
 
         $centre->save();
 
@@ -81,5 +102,11 @@ class CentreController extends Controller
     {
         $centre->delete();
         return response(["success" => true]);
+    }
+
+    public function getCentreByVilleId($ville_id)
+    {
+        $centre = DB::table('centres')->where('ville_id', $ville_id)->get();
+        return response($centre);
     }
 }

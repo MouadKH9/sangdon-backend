@@ -3,11 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class User extends \TCG\Voyager\Models\User implements JWTSubject
 {
     use HasFactory, Notifiable;
 
@@ -18,8 +17,9 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'name',
-        'age',
-        'adress',
+        'date_naissance',
+        'ville_id',
+        'type_sang_id',
         'sexe',
         'email',
         'password',
@@ -32,7 +32,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token'
     ];
 
     /**
@@ -40,15 +40,27 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+
+    public function dons()
+    {
+        return $this->hasMany(Don::class);
+    }
+
+    public function type_sang()
+    {
+        return $this->belongsTo(Typesang::class, 'type_sang_id');
+    }
+
+    public function ville()
+    {
+        return $this->belongsTo(Ville::class, 'ville_id');
+    }
 
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
-    
+
     public function getJWTCustomClaims()
     {
         return [];
