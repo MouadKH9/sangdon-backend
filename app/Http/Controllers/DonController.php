@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\demande;
 use App\Models\Don;
 use App\Models\TypeSang;
 use App\Models\User;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -85,7 +88,7 @@ class DonController extends Controller
      * @param  int  $id_user
      * @return \Illuminate\Http\Response
      */
-    public function showUserStats($id_user)
+    public function showDonbyYear($id_user)
     {
         $dons = Don::selectRaw('year(created_at) year, count(*) data')
                                 ->groupBy('year')
@@ -96,7 +99,41 @@ class DonController extends Controller
             'stats' => $dons
             ]);
     }
+    
+    public function showStats($id_user)
+    {
+        $dons = DB::table('dons')->count();
+        $demandes = DB::table('demandes')->count();
 
+        return response()->json([
+            'dons' => $dons,
+            'demandes' => $demandes 
+            ]);      
+    }
+
+    public function timeUntilNextDon($id_user)
+    {
+        $lastDate = DB::table('dons')
+                            ->orderBy('updated_at','desc')
+                            ->where('user_id', $id_user)
+                            ->value('updated_at');
+        if($lastDate == null)
+        {
+            $lastDate = DB::table('dons')
+                            ->orderBy('created_at','desc')
+                            ->where('user_id', $id_user)
+                            ->value('created_at');
+        }
+        $currentDate = Carbon::now();
+        
+        $datetime1 = new DateTime($lastDate);
+        $datetime2 = new DateTime($currentDate);
+        
+        $time = $datetime1->diff($datetime2);
+        return response()->json([
+            'time' => $time
+        ]);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -111,7 +148,6 @@ class DonController extends Controller
         ]);
 
         $don = Don::findOrFail($id);
-       // $don->updated_at = Carbon::now();
         $don->adresse = $validated['adresse'];
 
         $don->save();

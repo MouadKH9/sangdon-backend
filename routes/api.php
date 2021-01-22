@@ -39,7 +39,9 @@ Route::get('showDemande/{id_dem}', [demandeController::class, 'getDemandeById'])
 Route::post('update/{id_dem}', [demandeController::class, 'update']);
 
 //dons api
-Route::get('/dons/stats/{id_user}', [DonController::class, 'showUserStats']);
+Route::get('/dons/next/{id_user}', [DonController::class, 'timeUntilNextDon']);
+Route::get('/dons/stats/year/{id_user}', [DonController::class, 'showDonbyYear']);
+Route::get('/dons/stats/{id_user}', [DonController::class, 'showStats']);
 Route::get('/dons/{id_user}', [DonController::class, 'showUserDons']);
 Route::resource('dons', DonController::class);
 
