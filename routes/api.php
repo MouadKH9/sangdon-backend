@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetRequestController;
 use App\Http\Controllers\ChangePasswordController;
-use App\Http\Controllers\demandeController;
+use App\Http\Controllers\DemandeController;
 
 use App\Http\Controllers\CentreController;
 use App\Http\Controllers\RdvController;
@@ -41,10 +41,10 @@ Route::post('/user/{id}', [UserController::class, 'updateUser']);
 Route::get('/users', [UserController::class, 'allUsers']);
 
 //demandes api
-Route::post('add', [demandeController::class, 'add']);
-Route::get('showList/{id_user}', [demandeController::class, 'showList']);
-Route::get('showDemande/{id_dem}', [demandeController::class, 'getDemandeById']);
-Route::post('update/{id_dem}', [demandeController::class, 'update']);
+Route::post('demande', [DemandeController::class, 'add']);
+Route::get('demandes/user/{id_user}', [DemandeController::class, 'showList']);
+Route::get('demande/{id_dem}', [DemandeController::class, 'getDemandeById']);
+Route::put('demande/{id_dem}', [DemandeController::class, 'update']);
 
 //dons api
 Route::get('/dons/stats/{id_user}', [DonController::class, 'showUserStats']);

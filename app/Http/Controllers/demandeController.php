@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\demande;
+use App\Models\Demande;
 use Illuminate\Support\Facades\DB;
 
-class demandeController extends Controller
+class DemandeController extends Controller
 {
     public function add(Request $request)
     {
@@ -15,7 +15,7 @@ class demandeController extends Controller
             'stat' => 'required'
         ]);
 
-        $demande = new demande([
+        $demande = new Demande([
             'id_dem' => $request->get('id_dem'),
             'adress' => $request->get('adress'),
             'stat'   => $request->get('stat'),
@@ -46,7 +46,7 @@ class demandeController extends Controller
             'adress' => 'required',
             'stat'     => 'required'
         ]);
-        $demande = demande::find($id_dem);
+        $demande = Demande::find($id_dem);
         $demande->adress = $request->get('adress');
         $demande->save();
 
@@ -55,7 +55,7 @@ class demandeController extends Controller
 
     public function confirmDemande($id)
     {
-        $demande = demande::find($id);
+        $demande = Demande::find($id);
         $demande->stat = true;
         $demande->save();
 
