@@ -53,6 +53,7 @@ Route::resource('dons', DonController::class);
 
 //centres api
 Route::resource('centres', CentreController::class);
+Route::get('/centre/{ville_id}', [CentreController::class, 'getCentreByVilleId']);
 
 //villes api
 Route::resource('villes', VilleController::class);
