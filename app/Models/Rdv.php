@@ -26,7 +26,7 @@ class Rdv extends Model
 
     public function demande()
     {
-        return $this->belongsTo(demande::Class)
+        return $this->belongsTo(demande::class);
     }
 
 }

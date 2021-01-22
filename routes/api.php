@@ -22,15 +22,23 @@ use App\Http\Controllers\VilleController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
+//Users api
 
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('/user', [UserController::class, 'getAuthenticatedUser']);
 });
 
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'authenticate']);
+Route::delete('/user', [UserController::class, 'delete']);
+Route::post('/user', [UserController::class, 'update']);
+
+Route::post('/reset-password-request', [PasswordResetRequestController::class, 'sendPasswordResetEmail']);
+Route::post('/change-password', [ChangePasswordController::class, 'passwordResetProcess']);
+
+Route::delete('/user/{id}', [UserController::class, 'deleteUser']);
+Route::post('/user/{id}', [UserController::class, 'updateUser']);
+Route::get('/users', [UserController::class, 'allUsers']);
 
 //demandes api
 Route::post('add', [demandeController::class, 'add']);
@@ -51,16 +59,3 @@ Route::resource('villes', VilleController::class);
 
 //RDV api
 Route::resource('rdv', RdvController::class);
-
-//Users api
-Route::post('/register', [UserController::class, 'register']);
-Route::post('/login', [UserController::class, 'authenticate']);
-Route::delete('/user', [UserController::class, 'delete']);
-Route::post('/user', [UserController::class, 'update']);
-
-Route::post('/reset-password-request', [PasswordResetRequestController::class, 'sendPasswordResetEmail']);
-Route::post('/change-password', [ChangePasswordController::class, 'passwordResetProcess']);
-
-Route::delete('/user/{id}', [UserController::class, 'deleteUser']);
-Route::post('/user/{id}', [UserController::class, 'updateUser']);
-Route::get('/users', [UserController::class, 'allUsers']);
