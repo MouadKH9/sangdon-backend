@@ -9,10 +9,7 @@ use Illuminate\Notifications\Notifiable;
 class Rdv extends Model
 {
     use HasFactory,Notifiable;
-
-    protected $fillable = [
-        'tsang',
-    ];
+    public $timestamps = true;
 
     public function don()
     {

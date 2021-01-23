@@ -14,7 +14,7 @@ class CreateDemandesTable extends Migration
     public function up()
     {
         Schema::create('demandes', function (Blueprint $table) {
-            $table->increments('id_dem');
+            $table->id();
             $table->string('adress');
             $table->boolean('stat');
             $table->foreignId('id_user')->references('id')->on('users')->onDelete('cascade');
