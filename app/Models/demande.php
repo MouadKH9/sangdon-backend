@@ -11,7 +11,7 @@ class Demande extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['id_dem', 'adress', 'stat', 'id_user'];
+    protected $guarded = [];
     protected $primaryKey = 'id_dem';
     public $timestamps = false;
 }
