@@ -43,7 +43,8 @@ Route::get('/dons/next/{id_user}', [DonController::class, 'timeUntilNextDon']);
 Route::get('/dons/stats/year/{id_user}', [DonController::class, 'showDonbyYear']);
 Route::get('/dons/stats/{id_user}', [DonController::class, 'showStats']);
 Route::get('/dons/{id_user}', [DonController::class, 'showUserDons']);
-Route::resource('dons', DonController::class);
+Route::get('dons/don/{id}', [DonController::class, 'show']);
+Route::apiResource('dons', DonController::class)->except(['show']);
 
 //centres api
 Route::resource('centres', CentreController::class);
@@ -52,7 +53,7 @@ Route::resource('centres', CentreController::class);
 Route::resource('villes', VilleController::class);
 
 //RDV api
-Route::resource('rdv', RdvController::class);
+Route::apiResource('rdv', RdvController::class);
 
 //Users api
 Route::post('/register', [UserController::class, 'register']);

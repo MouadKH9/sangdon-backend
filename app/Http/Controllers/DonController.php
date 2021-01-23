@@ -8,6 +8,7 @@ use App\Models\TypeSang;
 use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -91,6 +92,7 @@ class DonController extends Controller
     public function showDonbyYear($id_user)
     {
         $dons = Don::selectRaw('year(created_at) year, count(*) data')
+                                ->where('user_id',$id_user)
                                 ->groupBy('year')
                                 ->orderBy('year', 'desc')
                                 ->get();
@@ -102,8 +104,8 @@ class DonController extends Controller
     
     public function showStats($id_user)
     {
-        $dons = DB::table('dons')->count();
-        $demandes = DB::table('demandes')->count();
+        $dons = DB::table('dons')->where('user_id',$id_user)->count();
+        $demandes = DB::table('demandes')->where('id_user',$id_user)->count();
 
         return response()->json([
             'dons' => $dons,
@@ -126,12 +128,20 @@ class DonController extends Controller
         }
         $currentDate = Carbon::now();
         
-        $datetime1 = new DateTime($lastDate);
-        $datetime2 = new DateTime($currentDate);
-        
-        $time = $datetime1->diff($datetime2);
+        $currentDate =Carbon::createFromFormat('Y-m-d H:s:i', $currentDate);
+        $lastDate = Carbon::createFromFormat('Y-m-d H:s:i', $lastDate);
+
+        $different_days = $currentDate->diffInDays($lastDate);
+
+        $canDonate = false;
+        if($different_days > 56)
+            $canDonate = true;
         return response()->json([
-            'time' => $time
+            'current date' => $currentDate->format('Y-m-d'),
+            'last date' => $lastDate->format('Y-m-d'),
+            'time' => $different_days,
+            'canDonate' =>$canDonate
+
         ]);
     }
     /**
@@ -146,10 +156,15 @@ class DonController extends Controller
         $validated = $request->validate([
             'adresse' => 'required|max:255',
         ]);
+        try{
+            $don = Don::findOrFail($id);
+        }catch(Exception $e)
+        {
+            return response()->json(['err' => "Id not found"]);
+        }
 
-        $don = Don::findOrFail($id);
         $don->adresse = $validated['adresse'];
-
+        
         $don->save();
 
         return response()->json([
