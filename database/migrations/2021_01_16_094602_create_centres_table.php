@@ -17,6 +17,9 @@ class CreateCentresTable extends Migration
             $table->id();
             $table->string('name', 255);
             $table->string('address', 255);
+            $table->string('heure_ouv', 255);
+            $table->string('heure_ferm', 255);
+            $table->string('phone_number', 255);
 
             $table->unsignedBigInteger('ville_id');
             $table->foreign('ville_id')->references('id')->on('villes');
