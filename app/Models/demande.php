@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class demande extends Model
 {
     use HasFactory;
-    protected $fillable = ['id_dem','adress','stat','id_user'];
-    protected $primaryKey = 'id_dem';
+    protected $fillable = ['id','adress','stat','id_user'];
+    protected $primaryKey = 'id';
     public $timestamps = false;
 }

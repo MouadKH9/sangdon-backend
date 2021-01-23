@@ -13,18 +13,19 @@ class CreateRdvsTable extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('rdvs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('rdv_id')->constrained();
+            
             $table->foreignId('centre_id')->constrained();
             $table->foreignId('don_id')->constrained();
-
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('demande_id')->constrained();
             
-            $table->timestamp('date');
+            $table->timestamps();
             $table->softDeletes();
         });
+        Schema::enableForeignKeyConstraints();
+
     }
 
     /**
@@ -34,6 +35,8 @@ class CreateRdvsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('rdvs');
+        Schema::enableForeignKeyConstraints();
     }
 }

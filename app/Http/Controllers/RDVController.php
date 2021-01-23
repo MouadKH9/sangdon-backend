@@ -6,6 +6,7 @@ use App\Models\Centre;
 use App\Models\demande;
 use App\Models\Don;
 use App\Models\Rdv;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RdvController extends Controller
@@ -28,13 +29,12 @@ class RdvController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'date' => 'required',
             'id_don' => 'required',
             'id_centre' =>'required',
             'id_demande' => 'required'
         ]);
 
-        $rdv = new Rdv(['date' => $validated['date']]);
+        $rdv = new Rdv();
 
         $don = Don::findOrFail($validated['id_don']);
         $centre = Centre::findOrFail($validated['id_centre']);
@@ -72,7 +72,7 @@ class RdvController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    /*public function update(Request $request, $id)
     {
         $validated = $request->validate([
             'date' => 'required'
@@ -87,7 +87,7 @@ class RdvController extends Controller
         return response()->json([
             'msg' => 'rdv modifié avec succes'
         ]);
-    }
+    }*/
 
     /**
      * Remove the specified resource from storage.

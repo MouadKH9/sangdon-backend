@@ -15,11 +15,9 @@ class demandeController extends Controller
         ]);
 
         $demande = new demande([
-
-            'id_dem' => $request->get('id_dem'),
             'adress' => $request->get('adress'),
             'stat'   => $request->get('stat'),
-            'id_user'=> 1
+            'id_user'=> $request->get('id_user')
         ]);
         $demande ->save();
     }
@@ -32,7 +30,7 @@ class demandeController extends Controller
 
     public function getDemandeById($id_dem)
     {
-        $demande =DB::table('demandes')->where('id_dem', $id_dem)->get();
+        $demande =DB::table('demandes')->where('id', $id_dem)->get();
         return $demande;
     }
 
