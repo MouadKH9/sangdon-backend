@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Demande;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DemandeController extends Controller
 {
@@ -12,15 +13,18 @@ class DemandeController extends Controller
     {
         $this->validate($request, [
             'adress' => 'required',
-            'stat' => 'required'
+            'stat' => 'required',
+            'ville_id' => 'required|exists:villes,id',
+            'type_sang_id' => 'required|exists:type_sangs,id',
         ]);
 
         $demande = new Demande([
-            'id_dem' => $request->get('id_dem'),
-            'adress' => $request->get('adress'),
             'stat'   => $request->get('stat'),
-            'id_user' => 1
+            'id_user' => Auth::id(),
+            'id_ville' => $request->get('ville_id'),
+            'id_type_sang' => $request->get('type_sang_id'),
         ]);
+
         $demande->save();
 
         return response($demande);

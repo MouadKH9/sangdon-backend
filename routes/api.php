@@ -45,6 +45,7 @@ Route::post('demande', [DemandeController::class, 'add']);
 Route::get('demandes/user/{id_user}', [DemandeController::class, 'showList']);
 Route::get('demande/{id_dem}', [DemandeController::class, 'getDemandeById']);
 Route::put('demande/{id_dem}', [DemandeController::class, 'update']);
+Route::post('demande/{id_dem}', [DemandeController::class, 'confirmDemande']);
 
 //dons api
 Route::get('/dons/stats/{id_user}', [DonController::class, 'showUserStats']);

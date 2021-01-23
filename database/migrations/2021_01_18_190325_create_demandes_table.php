@@ -14,10 +14,13 @@ class CreateDemandesTable extends Migration
     public function up()
     {
         Schema::create('demandes', function (Blueprint $table) {
-            $table->increments('id_dem');
-            $table->string('adress');
-            $table->boolean('stat')->defaul(true);
+            $table->id();
+
+            $table->boolean('stat')->default(true);
             $table->foreignId('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('id_ville')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('id_type_sang')->references('id')->on('type_sangs')->onDelete('cascade');
+            $table->foreignId('id_rdv')->nullable()->references('id')->on('type_sangs')->onDelete('cascade');
 
             $table->softDeletes();
             $table->timestamps();
