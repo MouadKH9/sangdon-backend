@@ -13,7 +13,13 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
+<<<<<<< Updated upstream
         "laravel/tinker": "^2.5"
+=======
+        "laravel/tinker": "^2.5",
+        "tcg/voyager": "^1.4",
+        "tymon/jwt-auth": "^1.0"
+>>>>>>> Stashed changes
     },
     "require-dev": {
         "facade/ignition": "^2.5",

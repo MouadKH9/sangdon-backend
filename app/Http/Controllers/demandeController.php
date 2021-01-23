@@ -10,7 +10,7 @@ class demandeController extends Controller
     public function add(Request $request)
     {
         $this->validate($request, [
-            'adress'=>'required',
+            'adress'=>'required|max:255',
             'stat'     =>'required'
         ]);
 

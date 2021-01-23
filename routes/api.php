@@ -27,4 +27,11 @@ Route::get('showList/{id_user}',[demandeController::class, 'showList']);
 Route::get('showDemande/{id_dem}',[demandeController::class, 'getDemandeById']);
 Route::post('update/{id_dem}',[demandeController::class, 'update']);
 Route::resource('centres', CentreController::class);
+<<<<<<< Updated upstream
+=======
+Route::get('/centre/{ville_id}', [CentreController::class, 'getCentreByVilleId']);
+Route::get('/centreOuvert', [CentreController::class, 'centreOuvert']);
+
+//villes api
+>>>>>>> Stashed changes
 Route::resource('villes', VilleController::class);
