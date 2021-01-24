@@ -24,5 +24,4 @@ class Rdv extends Model
     {
         return $this->belongsTo(demande::class);
     }
-
 }
