@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -75,11 +76,15 @@ class UserController extends Controller
         return $user;
     }
 
-    public function delete()
+    public function delete(Request $request)
     {
         $user = $this->getAuthenticatedUser();
-        $user->delete();
-        return response()->json('user deleted', 200);
+        if (Hash::check($request->get('password'), $user->password)) {
+            $user->delete();
+            return response()->json('user deleted', 200);
+        }
+        else
+            return response()->json('password incorrect', 400);
     }
 
     public function update(Request $request)

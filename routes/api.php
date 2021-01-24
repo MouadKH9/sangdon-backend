@@ -63,16 +63,3 @@ Route::resource('villes', VilleController::class);
 
 //RDV api
 Route::apiResource('rdv', RdvController::class);
-
-//Users api
-Route::post('/register', [UserController::class, 'register']);
-Route::post('/login', [UserController::class, 'authenticate']);
-Route::delete('/user', [UserController::class, 'delete']);
-Route::post('/user', [UserController::class, 'update']);
-
-Route::post('/reset-password-request', [PasswordResetRequestController::class, 'sendPasswordResetEmail']);
-Route::post('/change-password', [ChangePasswordController::class, 'passwordResetProcess']);
-
-Route::delete('/user/{id}', [UserController::class, 'deleteUser']);
-Route::post('/user/{id}', [UserController::class, 'updateUser']);
-Route::get('/users', [UserController::class, 'allUsers']);
