@@ -76,11 +76,15 @@ class UserController extends Controller
         return $user;
     }
 
-    public function delete()
+    public function delete(Request $request)
     {
         $user = $this->getAuthenticatedUser();
-        $user->delete();
-        return response()->json('user deleted', 200);
+        if (Hash::check($request->get('password'), $user->password)) {
+            $user->delete();
+            return response()->json('user deleted', 200);
+        }
+        else
+            return response()->json('password incorrect', 400);
     }
 
     public function update(Request $request)

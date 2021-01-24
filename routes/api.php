@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\DonController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetRequestController;
@@ -58,18 +57,6 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     // type de sang API
     Route::get('type-sangs', [UserController::class, 'getTypeSangs']);
 });
-
-Route::post('/register', [UserController::class, 'register']);
-Route::post('/login', [UserController::class, 'authenticate']);
-Route::delete('/user', [UserController::class, 'delete']);
-Route::post('/user', [UserController::class, 'update']);
-
-Route::post('/reset-password-request', [PasswordResetRequestController::class, 'sendPasswordResetEmail']);
-Route::post('/change-password', [ChangePasswordController::class, 'passwordResetProcess']);
-
-Route::delete('/user/{id}', [UserController::class, 'deleteUser']);
-Route::post('/user/{id}', [UserController::class, 'updateUser']);
-Route::get('/users', [UserController::class, 'allUsers']);
 
 //Users api
 Route::post('/register', [UserController::class, 'register']);
