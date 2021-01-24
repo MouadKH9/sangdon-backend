@@ -9,7 +9,6 @@ use Illuminate\Notifications\Notifiable;
 class Rdv extends Model
 {
     use HasFactory,Notifiable;
-    public $timestamps = true;
 
     public function don()
     {
@@ -25,6 +24,4 @@ class Rdv extends Model
     {
         return $this->belongsTo(demande::class);
     }
-    public $timestamps = false;
-
 }
