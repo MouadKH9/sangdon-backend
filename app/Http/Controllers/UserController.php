@@ -82,7 +82,7 @@ class UserController extends Controller
             $user->delete();
             return response()->json('user deleted', 200);
         }
-        else 
+        else
             return response()->json('password incorrect', 400);
     }
 
