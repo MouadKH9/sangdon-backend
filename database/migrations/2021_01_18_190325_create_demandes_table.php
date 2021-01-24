@@ -15,9 +15,14 @@ class CreateDemandesTable extends Migration
     {
         Schema::create('demandes', function (Blueprint $table) {
             $table->id();
-            $table->string('adress');
-            $table->boolean('stat');
+
+            $table->boolean('stat')->default(true);
             $table->foreignId('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('id_ville')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('id_type_sang')->references('id')->on('type_sangs')->onDelete('cascade');
+            $table->foreignId('id_rdv')->nullable()->references('id')->on('type_sangs')->onDelete('cascade');
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

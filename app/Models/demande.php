@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class demande extends Model
+class Demande extends Model
 {
     use HasFactory;
-    protected $fillable = ['id','adress','stat','id_user'];
-    protected $primaryKey = 'id';
+    use SoftDeletes;
+
+    protected $guarded = [];
+    protected $primaryKey = 'id_dem';
     public $timestamps = false;
 }

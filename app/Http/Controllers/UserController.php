@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Typesang;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -180,5 +181,10 @@ class UserController extends Controller
             return User::all();
         else
             return response()->json('you are not an admin', 400);
+    }
+
+    public function getTypeSangs()
+    {
+        return response(Typesang::all());
     }
 }
