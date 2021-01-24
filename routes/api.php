@@ -57,6 +57,7 @@ Route::apiResource('dons', DonController::class)->except(['show']);
 //centres api
 Route::resource('centres', CentreController::class);
 Route::get('/centre/{ville_id}', [CentreController::class, 'getCentreByVilleId']);
+Route::get('/centreOuvert', [CentreController::class, 'centreOuvert']);
 
 //villes api
 Route::resource('villes', VilleController::class);
