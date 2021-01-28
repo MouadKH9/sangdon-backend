@@ -12,6 +12,6 @@ class Demande extends Model
     use SoftDeletes;
 
     protected $guarded = [];
-    protected $primaryKey = 'id_dem';
+    protected $primaryKey = 'id';
     public $timestamps = false;
 }

@@ -55,7 +55,7 @@ class DemandeController extends Controller
 
     public function getDemandeById($id_dem)
     {
-        $demande = DB::table('demandes')->where('id_dem', $id_dem)->get();
+        $demande = DB::table('demandes')->where('id', $id_dem)->get();
 
         return response($demande);
     }
