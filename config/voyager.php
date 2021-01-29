@@ -144,6 +144,7 @@ return [
         ],
 
         'widgets' => [
+            'App\\Widgets\Chart'
 
         ],
 
