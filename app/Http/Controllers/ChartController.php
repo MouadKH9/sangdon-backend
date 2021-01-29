@@ -16,21 +16,12 @@ class ChartController extends Controller
                     ->whereYear('created_at', date('Y'))
                     ->groupBy(\DB::raw("Month(created_at)"))
                     ->pluck('count');
-
-        // $dons = DB::table('dons')
-        //             ->whereYear('created_at', date('Y'))
-        //             ->whereMonth('created_at', '=', 01)
-        //             ->groupBy(\DB::raw("Month(created_at)"))
-        //             ->count();
         
-        // $dons = DB::table('dons')
-        //           ->select('age', DB::raw('count(*) as total'))
-        //           ->groupBy('age')
-        //           ->pluck('total', 'age')->all();
          $users  = User::select(\DB::raw("COUNT(*) as count"))
          ->whereYear('created_at', date('Y'))
          ->groupBy(\DB::raw("Month(created_at)"))
          ->pluck('count');
+        
          $demandes  = demande::select(\DB::raw("COUNT(*) as count"))
          ->whereYear('created_at', date('Y'))
          ->groupBy(\DB::raw("Month(created_at)"))
