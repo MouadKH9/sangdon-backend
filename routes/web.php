@@ -21,5 +21,3 @@ Route::get('/', function () {
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
-
-Route::get("/chartjs", "App\Http\Controllers\ChartController@Chartjs");
