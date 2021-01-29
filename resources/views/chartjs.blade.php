@@ -21,7 +21,6 @@
     type: 'bar',
     data: {
     labels: <?php echo json_encode($Months); ?>,
-    // labels: month,
     datasets: [
     
     {
