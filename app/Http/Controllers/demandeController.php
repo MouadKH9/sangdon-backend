@@ -31,12 +31,14 @@ class DemandeController extends Controller
     {
         $user = Auth::user();
 
+        $demandes = DB::table('demandes');
         if ($user->type_sang_id != null)
-            $demandes = DB::table('demandes')->where('id_type_sang', $user->type_sang_id)->get();
-        else
-            $demandes = DB::table('demandes')->get();
+            $demandes = $demandes->where('id_type_sang', $user->type_sang_id);
 
-        return response($demandes);
+        if ($user->ville_id !== null)
+            $demandes = $demandes->where("id_ville", $user->ville_id);
+
+        return response($demandes->get());
     }
 
     public function showList($id_user)
