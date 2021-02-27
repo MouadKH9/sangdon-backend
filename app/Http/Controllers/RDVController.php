@@ -29,20 +29,16 @@ class RdvController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id_don' => 'required',
-            'id_centre' =>'required',
-            'id_demande' => 'required'
+            'id_centre' => 'required',
+            'date_rdv' => 'required|date'
         ]);
 
         $rdv = new Rdv();
 
-        $don = Don::findOrFail($validated['id_don']);
         $centre = Centre::findOrFail($validated['id_centre']);
-        $demande = demande::findOrFail($validated['id_demande']);
 
-        $rdv->don()->associate($don);
         $rdv->centre()->associate($centre);
-        $rdv->demande()->associate($demande);
+        $rdv->date_rdv = $validated["date_rdv"];
 
         $rdv->save();
 
@@ -62,7 +58,7 @@ class RdvController extends Controller
     {
         $rdv = Rdv::findOrFail($id);
 
-        return($rdv);
+        return ($rdv);
     }
 
     /**

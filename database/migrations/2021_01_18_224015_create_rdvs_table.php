@@ -14,18 +14,21 @@ class CreateRdvsTable extends Migration
     public function up()
     {
         Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('rdvs');
+
         Schema::create('rdvs', function (Blueprint $table) {
             $table->id();
-            
+
+            $table->dateTime('date_rdv');
+
             $table->foreignId('centre_id')->constrained();
-            $table->foreignId('don_id')->constrained();
-            $table->foreignId('demande_id')->constrained();
-            
+            $table->foreignId('don_id')->constrained()->nullable();
+            $table->foreignId('demande_id')->constrained()->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });
         Schema::enableForeignKeyConstraints();
-
     }
 
     /**
