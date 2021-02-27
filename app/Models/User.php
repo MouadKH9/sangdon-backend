@@ -35,6 +35,9 @@ class User extends \TCG\Voyager\Models\User implements JWTSubject
         'remember_token'
     ];
 
+    protected $with = array('ville', 'type_sang');
+
+
     /**
      * The attributes that should be cast to native types.
      *
