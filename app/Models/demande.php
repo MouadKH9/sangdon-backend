@@ -14,4 +14,16 @@ class Demande extends Model
     protected $guarded = [];
     protected $primaryKey = 'id';
     public $timestamps = false;
+
+    protected $with = array('centre', 'type_sang');
+
+    public function centre()
+    {
+        return $this->belongsTo(Centre::class, "id_centre");
+    }
+
+    public function type_sang()
+    {
+        return $this->belongsTo(Typesang::class, "id_type_sang");
+    }
 }

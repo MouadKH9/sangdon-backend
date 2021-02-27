@@ -12,13 +12,15 @@ class DemandeController extends Controller
     public function add(Request $request)
     {
         $this->validate($request, [
-            'ville_id' => 'required|exists:villes,id',
+            'id_ville' => 'required|exists:villes,id',
+            'id_centre' => 'required|exists:centres,id',
             'type_sang_id' => 'required|exists:type_sangs,id',
         ]);
 
         $demande = new Demande([
             'id_user' => Auth::id(),
-            'id_ville' => $request->get('ville_id'),
+            'id_ville' => $request->get('id_ville'),
+            'id_centre' => $request->get('id_centre'),
             'id_type_sang' => $request->get('type_sang_id'),
         ]);
 
@@ -31,12 +33,10 @@ class DemandeController extends Controller
     {
         $user = Auth::user();
 
-        $demandes = DB::table('demandes');
-        if ($user->type_sang_id != null)
-            $demandes = $demandes->where('id_type_sang', $user->type_sang_id);
-
-        if ($user->ville_id !== null)
-            $demandes = $demandes->where("id_ville", $user->ville_id);
+        $ville_id = $user->ville_id;
+        $demandes = Demande::when($ville_id, function ($query, $ville_id) {
+            return $query->where('id_ville', $ville_id);
+        });
 
         return response($demandes->get());
     }
