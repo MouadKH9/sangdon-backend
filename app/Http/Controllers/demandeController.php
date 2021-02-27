@@ -50,7 +50,7 @@ class DemandeController extends Controller
 
     public function mesDemandes()
     {
-        $demande = DB::table('demandes')->where('id_user', Auth::id())->get();
+        $demande = Demande::with('centre')->where('id_user', Auth::id())->get();
 
         return response($demande);
     }
