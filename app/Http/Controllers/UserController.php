@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\JwtMiddleware;
 use App\Models\Typesang;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,7 +27,8 @@ class UserController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 
-        return response()->json(compact('token'));
+        $user = JWTAuth::user();
+        return response()->json(compact('token', 'user'));
     }
 
     public function register(Request $request)
@@ -36,7 +38,7 @@ class UserController extends Controller
             'date_naissance' => 'required|date_format:Y-m-d',
             'sexe' => 'required|string|in:homme,femme',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:4|confirmed',
+            'password' => 'required|string|min:4',
             'ville_id' => 'required|exists:villes,id',
             'type_sang_id' => 'required|exists:type_sangs,id',
         ]);
@@ -79,11 +81,10 @@ class UserController extends Controller
     public function delete(Request $request)
     {
         $user = $this->getAuthenticatedUser();
-        if (Hash::check($request->get('password'), $user->password)) {
+        if (Hash::check($request->header('password'), $user->password)) {
             $user->delete();
             return response()->json('user deleted', 200);
-        }
-        else
+        } else
             return response()->json('password incorrect', 400);
     }
 

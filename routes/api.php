@@ -63,7 +63,6 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
     //villes api
     // Najm eddine
-    Route::resource('villes', VilleController::class);
 
     //RDV api
     Route::apiResource('rdv', RdvController::class);
@@ -76,6 +75,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 // Mouad
 Route::post('/login', [UserController::class, 'authenticate']);
 Route::post('/register', [UserController::class, 'register']);
+Route::resource('villes', VilleController::class);
 
 Route::post('/reset-password-request', [PasswordResetRequestController::class, 'sendPasswordResetEmail']);
 Route::post('/change-password', [ChangePasswordController::class, 'passwordResetProcess']);
